@@ -4,7 +4,13 @@ set -euo pipefail
 SRC="${1:-report.md}"
 DIST_DIR="dist"
 PDF_OUT="${DIST_DIR}/report.pdf"
-MAINFONT="${MAINFONT:-TeX Gyre Heros}"
+MAINFONT="${MAINFONT:-Helvetica Neue}"
+FONT_PATH="${FONT_PATH:-}"
+FONT_EXTENSION="${FONT_EXTENSION:-}"
+FONT_UPRIGHT="${FONT_UPRIGHT:-}"
+FONT_BOLD="${FONT_BOLD:-}"
+FONT_ITALIC="${FONT_ITALIC:-}"
+FONT_BOLDITALIC="${FONT_BOLDITALIC:-}"
 FORMAT="${FORMAT:-A4}"
 LATEX_HEADER="templates/swiss-header.tex"
 
@@ -47,10 +53,16 @@ GEOM_BOTTOM="$(awk "BEGIN{printf \"%.1fmm\", 2*$PAGE_W_MM/9}")"
 GEOM_INNER="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9}")"
 GEOM_OUTER="$(awk "BEGIN{printf \"%.1fmm\", 1.5*$PAGE_W_MM/9}")"
 
-PAPERSIZE="a${A_INDEX}paper"
+PAPERSIZE="a${A_INDEX}"
 
 usage() {
   echo "Usage: FORMAT=A4|A3L|A5P bash scripts/export.sh <source.md>"
+  echo ""
+  echo "Font options:"
+  echo "  MAINFONT=\"Helvetica Neue\""
+  echo "  FONT_PATH=/absolute/path/to/fonts"
+  echo "  FONT_EXTENSION=.otf"
+  echo "  FONT_UPRIGHT=*-Regular FONT_BOLD=*-Bold FONT_ITALIC=*-Italic FONT_BOLDITALIC=*-BoldItalic"
 }
 
 build_pdf() {
@@ -71,18 +83,59 @@ build_pdf() {
     header_arg="--include-in-header $LATEX_HEADER"
   fi
 
-  pandoc "$SRC" \
-    --pdf-engine "xelatex" \
-    -V "papersize=$PAPERSIZE" \
-    -V "geometry:top=$GEOM_TOP" \
-    -V "geometry:bottom=$GEOM_BOTTOM" \
-    -V "geometry:inner=$GEOM_INNER" \
-    -V "geometry:outer=$GEOM_OUTER" \
-    -V "mainfont=$MAINFONT" \
-    -V "fontsize=10.5pt" \
-    ${GEOM_ORIENTATION_ARG} \
-    ${header_arg} \
-    --output "$PDF_OUT"
+  local mainfontopts=""
+  if [[ -n "$FONT_PATH" ]]; then
+    if [[ ! -d "$FONT_PATH" ]]; then
+      echo "Error: FONT_PATH '$FONT_PATH' is not a valid directory."
+      exit 1
+    fi
+
+    local path_value="${FONT_PATH%/}/"
+    mainfontopts="Path=${path_value}"
+
+    if [[ -n "$FONT_EXTENSION" ]]; then
+      mainfontopts+",Extension=${FONT_EXTENSION}"
+    fi
+    if [[ -n "$FONT_UPRIGHT" ]]; then
+      mainfontopts+",UprightFont=${FONT_UPRIGHT}"
+    fi
+    if [[ -n "$FONT_BOLD" ]]; then
+      mainfontopts+",BoldFont=${FONT_BOLD}"
+    fi
+    if [[ -n "$FONT_ITALIC" ]]; then
+      mainfontopts+",ItalicFont=${FONT_ITALIC}"
+    fi
+    if [[ -n "$FONT_BOLDITALIC" ]]; then
+      mainfontopts+",BoldItalicFont=${FONT_BOLDITALIC}"
+    fi
+  fi
+
+  local pandoc_args=(
+    "$SRC"
+    --pdf-engine "xelatex"
+    -V "papersize=$PAPERSIZE"
+    -V "geometry:top=$GEOM_TOP"
+    -V "geometry:bottom=$GEOM_BOTTOM"
+    -V "geometry:inner=$GEOM_INNER"
+    -V "geometry:outer=$GEOM_OUTER"
+    -V "mainfont=$MAINFONT"
+  )
+
+  if [[ -n "$mainfontopts" ]]; then
+    pandoc_args+=( -V "mainfontoptions=$mainfontopts" )
+  fi
+
+  if [[ -n "$GEOM_ORIENTATION_ARG" ]]; then
+    pandoc_args+=( $GEOM_ORIENTATION_ARG )
+  fi
+
+  if [[ -n "$header_arg" ]]; then
+    pandoc_args+=( --include-in-header "$LATEX_HEADER" )
+  fi
+
+  pandoc_args+=( --output "$PDF_OUT" )
+
+  pandoc "${pandoc_args[@]}"
 
   echo "PDF exported with xelatex ($FORMAT_UPPER, ${PAPERSIZE}, ${ORIENTATION_NAME}): $PDF_OUT"
 }

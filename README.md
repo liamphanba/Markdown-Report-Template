@@ -95,8 +95,26 @@ Adjust tokens in `styles/swiss-report.css`:
 
 ## Notes
 
-Set a custom LaTeX font at runtime if needed:
+Default export font is `Helvetica Neue`.
+
+`MAINFONT` must be the exact full font family name recognized by XeLaTeX/fontspec.
+Use full names (for example: `Helvetica Neue`, `Times New Roman`, `SF Pro Text`), not abbreviations.
+
+Set a different font at runtime:
 
 ```bash
-MAINFONT="Helvetica Neue" make pdf
+MAINFONT="Helvetica Neue" make
+```
+
+Use custom local font files (not system-installed):
+
+```bash
+MAINFONT="AvenirNext" \
+FONT_PATH="/absolute/path/to/fonts" \
+FONT_EXTENSION=.otf \
+FONT_UPRIGHT="*-Regular" \
+FONT_BOLD="*-Bold" \
+FONT_ITALIC="*-Italic" \
+FONT_BOLDITALIC="*-BoldItalic" \
+make
 ```

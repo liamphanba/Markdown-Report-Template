@@ -76,7 +76,7 @@
 
 % subsubsection -> H3: 13.13 pt bold uppercase
 \titleformat{\subsubsection}[block]
-  {\fontsize{13.13pt}{15.75pt}\selectfont\bfseries\MakeUppercase\color{ink}}
+  {\fontsize{13.13pt}{15.75pt}\selectfont\bfseries\color{ink}}
   {}
   {0pt}
   {}
@@ -116,12 +116,9 @@
 
 \renewenvironment{quote}{\begin{swissquoteenv}}{\end{swissquoteenv}}
 
-% ---- Horizontal rule --------------------------------------
-\renewcommand{\rule}[2]{\textcolor{ruleline}{\hrule height 0.4pt}}
-
 % ---- Hyperlink colors -------------------------------------
-% hyperref is already loaded by Pandoc's default template;
-% these options are safe to apply post-load via \hypersetup
+% Guard in case hyperref is not loaded by the active Pandoc template.
+\providecommand{\hypersetup}[1]{}
 \hypersetup{
   colorlinks=true,
   urlcolor=ink,
