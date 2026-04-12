@@ -13,6 +13,7 @@ FONT_ITALIC="${FONT_ITALIC:-}"
 FONT_BOLDITALIC="${FONT_BOLDITALIC:-}"
 FORMAT="${FORMAT:-A4}"
 LATEX_HEADER="templates/swiss-header.tex"
+LATEX_TEMPLATE="templates/report.tex"
 
 # FORMAT syntax: A1..A6, optional P/L suffix.
 # Examples: A4, A4P, A4L, A3L, A6P
@@ -46,12 +47,12 @@ else
   GEOM_ORIENTATION_ARG=""
 fi
 
-# 9-unit margin canon: unit = page_width / 9
-# top=1u  bottom=2u  inner=1u  outer=1.5u
+# Standard symmetric margins for single-sided document (no inner/outer swap).
+# left = right = W/9, top = W/9, bottom = W/9 × 2.
+GEOM_LEFT="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9}")"
+GEOM_RIGHT="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9}")"
 GEOM_TOP="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9}")"
-GEOM_BOTTOM="$(awk "BEGIN{printf \"%.1fmm\", 2*$PAGE_W_MM/9}")"
-GEOM_INNER="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9}")"
-GEOM_OUTER="$(awk "BEGIN{printf \"%.1fmm\", 1.5*$PAGE_W_MM/9}")"
+GEOM_BOTTOM="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9*2}")"
 
 PAPERSIZE="a${A_INDEX}"
 
@@ -94,30 +95,33 @@ build_pdf() {
     mainfontopts="Path=${path_value}"
 
     if [[ -n "$FONT_EXTENSION" ]]; then
-      mainfontopts+",Extension=${FONT_EXTENSION}"
+      mainfontopts+=";Extension=${FONT_EXTENSION}"
     fi
     if [[ -n "$FONT_UPRIGHT" ]]; then
-      mainfontopts+",UprightFont=${FONT_UPRIGHT}"
+      mainfontopts+=";UprightFont=${FONT_UPRIGHT}"
     fi
     if [[ -n "$FONT_BOLD" ]]; then
-      mainfontopts+",BoldFont=${FONT_BOLD}"
+      mainfontopts+=";BoldFont=${FONT_BOLD}"
     fi
     if [[ -n "$FONT_ITALIC" ]]; then
-      mainfontopts+",ItalicFont=${FONT_ITALIC}"
+      mainfontopts+=";ItalicFont=${FONT_ITALIC}"
     fi
     if [[ -n "$FONT_BOLDITALIC" ]]; then
-      mainfontopts+",BoldItalicFont=${FONT_BOLDITALIC}"
+      mainfontopts+=";BoldItalicFont=${FONT_BOLDITALIC}"
     fi
   fi
 
   local pandoc_args=(
     "$SRC"
     --pdf-engine "xelatex"
+    --table-of-contents
+    --toc-depth=3
+    --top-level-division=chapter
     -V "papersize=$PAPERSIZE"
     -V "geometry:top=$GEOM_TOP"
     -V "geometry:bottom=$GEOM_BOTTOM"
-    -V "geometry:inner=$GEOM_INNER"
-    -V "geometry:outer=$GEOM_OUTER"
+    -V "geometry:left=$GEOM_LEFT"
+    -V "geometry:right=$GEOM_RIGHT"
     -V "mainfont=$MAINFONT"
   )
 
@@ -131,6 +135,10 @@ build_pdf() {
 
   if [[ -n "$header_arg" ]]; then
     pandoc_args+=( --include-in-header "$LATEX_HEADER" )
+  fi
+
+  if [[ -f "$LATEX_TEMPLATE" ]]; then
+    pandoc_args+=( --template "$LATEX_TEMPLATE" )
   fi
 
   pandoc_args+=( --output "$PDF_OUT" )

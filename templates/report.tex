@@ -1,0 +1,138 @@
+$document-metadata.latex()$
+$passoptions.latex()$
+\documentclass[
+$for(babel-otherlangs)$
+  $babel-otherlangs$,
+$endfor$
+$if(babel-lang)$
+  $babel-lang$,
+$endif$
+$if(fontsize)$
+  $fontsize$,
+$endif$
+$if(papersize)$
+  $papersize$paper,
+$endif$
+$for(classoption)$
+  $classoption$$sep$,
+$endfor$
+]{$documentclass$}
+$if(beamerarticle)$
+\usepackage{beamerarticle}
+$endif$
+\usepackage{xcolor}
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+\usepackage{amsmath,amssymb}
+$if(cancel)$
+\usepackage{cancel}
+$endif$
+$if(numbersections)$
+\setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
+$else$
+\setcounter{secnumdepth}{-\maxdimen}
+$endif$
+$fonts.latex()$
+$font-settings.latex()$
+$common.latex()$
+$for(header-includes)$
+$header-includes$
+$endfor$
+$after-header-includes.latex()$
+$hypersetup.latex()$
+
+% ── Cover page commands ───────────────────────────────────────────────────────
+% Pandoc template variables are substituted here, before XeLaTeX compilation.
+\renewcommand{\maketitle}{%
+  \begin{titlepage}%
+    \pagecolor{posterbg}%
+    \color{posterfg}%
+    \thispagestyle{empty}%
+    \raggedright
+    \vspace*{0.10\paperheight}
+    {\fontsize{56pt}{56pt}\selectfont\bfseries $if(fronttitle)$$fronttitle$$else$$title$$endif$ \par}
+$if(frontsubtitle)$
+    \vspace{12pt}
+    {\fontsize{18pt}{22pt}\selectfont $frontsubtitle$ \par}
+$elseif(subtitle)$
+    \vspace{12pt}
+    {\fontsize{18pt}{22pt}\selectfont $subtitle$ \par}
+$endif$
+    \vfill
+    {\fontsize{12pt}{14pt}\selectfont $if(frontauthor)$$frontauthor$$else$$for(author)$$author$$sep$, $endfor$$endif$ \par}
+    {\fontsize{11pt}{13pt}\selectfont $if(frontdate)$$frontdate$$else$$date$$endif$ \par}
+  \end{titlepage}%
+  \nopagecolor
+  \color{ink}%
+}
+
+\newcommand{\makebackpage}{%
+  \begin{titlepage}%
+    \pagecolor{backpagebg}%
+    \color{ink}%
+    \thispagestyle{empty}%
+    \raggedright
+    \vspace*{0.10\paperheight}
+    {\fontsize{56pt}{56pt}\selectfont\bfseries $if(backtitle)$$backtitle$$else$$title$$endif$ \par}
+$if(backsubtitle)$
+    \vspace{12pt}
+    {\fontsize{18pt}{22pt}\selectfont $backsubtitle$ \par}
+$elseif(subtitle)$
+    \vspace{12pt}
+    {\fontsize{18pt}{22pt}\selectfont $subtitle$ \par}
+$endif$
+    \vfill
+    {\fontsize{12pt}{14pt}\selectfont $if(backauthor)$$backauthor$$else$$for(author)$$author$$sep$, $endfor$$endif$ \par}
+    {\fontsize{11pt}{13pt}\selectfont $if(backdate)$$backdate$$else$$date$$endif$ \par}
+  \end{titlepage}%
+  \nopagecolor
+  \color{ink}%
+}
+% ─────────────────────────────────────────────────────────────────────────────
+
+$if(title)$
+\title{$title$}
+$endif$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+\date{$date$}
+
+\begin{document}
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+$if(title)$
+\maketitle
+$endif$
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+$if(toc-title)$
+\renewcommand*\contentsname{$toc-title$}
+$endif$
+{
+$if(colorlinks)$
+$if(toccolor)$
+\hypersetup{linkcolor=$toccolor$}
+$endif$
+$endif$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$if(has-frontmatter)$
+\mainmatter
+$endif$
+$body$
+
+$if(has-frontmatter)$
+\backmatter
+$endif$
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}

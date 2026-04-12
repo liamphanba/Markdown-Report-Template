@@ -35,7 +35,7 @@ Only one required dependency:
 
 PDF engine:
 
-- XeLaTeX via MacTeX only
+- XeLaTeX only
 
 ## macOS Setup
 
