@@ -23,7 +23,7 @@ Minimalist, strict-grid report template inspired by Swiss design principles.
 
 - `report.md`: write your report content here
 - `styles/swiss-report.css`: visual system for web and print
-- `scripts/export.sh`: export script with mode-based PDF/HTML workflows
+- `scripts/export.sh`: XeLaTeX-only PDF export script
 - `Makefile`: short commands for day-to-day use
 - `dist/`: generated output
 
@@ -33,20 +33,14 @@ Only one required dependency:
 
 - [Pandoc](https://pandoc.org/installing.html)
 
-Default PDF engine (recommended for stable report pagination):
+PDF engine:
 
-- LaTeX engine via Pandoc (`xelatex` preferred, `lualatex` fallback)
-
-Optional dependency for CSS-based PDF export:
-
-- [WeasyPrint](https://weasyprint.org/)
-- Chrome/Chromium (headless print mode)
+- XeLaTeX via MacTeX only
 
 ## macOS Setup
 
 - Install Pandoc: brew install pandoc
-- Install LaTeX engine for default PDF mode: brew install --cask mactex-no-gui
-- Optional CSS PDF mode: brew install weasyprint
+- Install MacTeX (provides xelatex): brew install --cask mactex-no-gui
 
 ## Quick Start
 
@@ -57,24 +51,12 @@ Optional dependency for CSS-based PDF export:
 make
 ```
 
-3. Export PDF using CSS mode (optional):
-
-```bash
-make pdf-css
-```
-
-4. Export HTML only (optional):
-
-```bash
-make html
-```
-
-5. Switch paper format and orientation:
+3. Switch paper format and orientation:
 
 ```bash
 FORMAT=A3L make       # A3 landscape PDF
 FORMAT=A5P make       # A5 portrait PDF
-FORMAT=A1L make html  # A1 landscape HTML preview
+FORMAT=A1L make       # A1 landscape PDF
 ```
 
 Supported values: `A1` to `A6` with optional `P` (portrait) or `L` (landscape).
@@ -83,7 +65,6 @@ Examples: `A4` (default portrait), `A4L`, `A2P`.
 Output files:
 
 - `dist/report.pdf`
-- `dist/report.html` (only in HTML/CSS mode)
 
 ## Content Rules (Swiss Spirit)
 
@@ -118,10 +99,4 @@ Set a custom LaTeX font at runtime if needed:
 
 ```bash
 MAINFONT="Helvetica Neue" make pdf
-```
-
-If LaTeX is unavailable, use CSS mode with WeasyPrint:
-
-```bash
-make pdf-css
 ```

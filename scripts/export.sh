@@ -2,13 +2,8 @@
 set -euo pipefail
 
 SRC="${1:-report.md}"
-MODE="${2:---pdf-latex}"
 DIST_DIR="dist"
-DIST_CSS_DIR="${DIST_DIR}/styles"
-HTML_OUT="${DIST_DIR}/report.html"
 PDF_OUT="${DIST_DIR}/report.pdf"
-CSS_SRC="styles/swiss-report.css"
-CSS_DIST="styles/swiss-report.css"
 MAINFONT="${MAINFONT:-TeX Gyre Heros}"
 FORMAT="${FORMAT:-A4}"
 LATEX_HEADER="templates/swiss-header.tex"
@@ -53,47 +48,16 @@ GEOM_INNER="$(awk "BEGIN{printf \"%.1fmm\", $PAGE_W_MM/9}")"
 GEOM_OUTER="$(awk "BEGIN{printf \"%.1fmm\", 1.5*$PAGE_W_MM/9}")"
 
 PAPERSIZE="a${A_INDEX}paper"
-FORMAT_CSS="styles/formats/a${A_INDEX}-${ORIENTATION_NAME}.css"
 
 usage() {
-  echo "Usage: FORMAT=A4|A3L|A5P bash scripts/export.sh <source.md> [--pdf-latex|--pdf-css|--html]"
+  echo "Usage: FORMAT=A4|A3L|A5P bash scripts/export.sh <source.md>"
 }
 
-build_html() {
-  mkdir -p "$DIST_DIR"
-  mkdir -p "$DIST_CSS_DIR"
-
-  cp "$CSS_SRC" "${DIST_CSS_DIR}/swiss-report.css"
-  rm -f "${DIST_CSS_DIR}"/format-*.css
-
-  local extra_css_arg=""
-  if [[ -n "$FORMAT_CSS" && -f "$FORMAT_CSS" ]]; then
-    local format_file="format-$(echo "$FORMAT" | tr '[:upper:]' '[:lower:]').css"
-    cp "$FORMAT_CSS" "${DIST_CSS_DIR}/${format_file}"
-    extra_css_arg="--css styles/${format_file}"
-  fi
-
-  pandoc "$SRC" \
-    --standalone \
-    --css "$CSS_DIST" \
-    ${extra_css_arg} \
-    --metadata pagetitle="Swiss Report" \
-    --output "$HTML_OUT"
-
-  echo "HTML exported: $HTML_OUT"
-}
-
-build_pdf_latex() {
-  local engine
-
-  if command -v xelatex >/dev/null 2>&1; then
-    engine="xelatex"
-  elif command -v lualatex >/dev/null 2>&1; then
-    engine="lualatex"
-  else
-    echo "Error: xelatex or lualatex is required for --pdf-latex mode."
+build_pdf() {
+  if ! command -v xelatex >/dev/null 2>&1; then
+    echo "Error: xelatex is required for PDF export."
     echo ""
-    echo "Install a TeX distribution on macOS:"
+    echo "Install MacTeX on macOS:"
     echo "  brew install --cask mactex-no-gui"
     echo ""
     echo "Then retry: make pdf"
@@ -108,7 +72,7 @@ build_pdf_latex() {
   fi
 
   pandoc "$SRC" \
-    --pdf-engine "$engine" \
+    --pdf-engine "xelatex" \
     -V "papersize=$PAPERSIZE" \
     -V "geometry:top=$GEOM_TOP" \
     -V "geometry:bottom=$GEOM_BOTTOM" \
@@ -120,25 +84,7 @@ build_pdf_latex() {
     ${header_arg} \
     --output "$PDF_OUT"
 
-  echo "PDF exported with $engine ($FORMAT_UPPER, ${PAPERSIZE}, ${ORIENTATION_NAME}): $PDF_OUT"
-}
-
-build_pdf_css() {
-  build_html
-
-  if command -v weasyprint >/dev/null 2>&1; then
-    weasyprint "$HTML_OUT" "$PDF_OUT"
-    echo "PDF exported with weasyprint: $PDF_OUT"
-  elif command -v google-chrome >/dev/null 2>&1; then
-    google-chrome --headless --disable-gpu --print-to-pdf="$PDF_OUT" "file://$PWD/$HTML_OUT"
-    echo "PDF exported with chrome: $PDF_OUT"
-  elif command -v chromium >/dev/null 2>&1; then
-    chromium --headless --disable-gpu --print-to-pdf="$PDF_OUT" "file://$PWD/$HTML_OUT"
-    echo "PDF exported with chromium: $PDF_OUT"
-  else
-    echo "Error: no CSS PDF engine found. Install weasyprint or chrome/chromium."
-    exit 1
-  fi
+  echo "PDF exported with xelatex ($FORMAT_UPPER, ${PAPERSIZE}, ${ORIENTATION_NAME}): $PDF_OUT"
 }
 
 if ! command -v pandoc >/dev/null 2>&1; then
@@ -148,21 +94,8 @@ fi
 
 if [[ ! -f "$SRC" ]]; then
   echo "Error: source file '$SRC' not found."
+  usage
   exit 1
 fi
 
-case "$MODE" in
-  --pdf-latex)
-    build_pdf_latex
-    ;;
-  --pdf-css)
-    build_pdf_css
-    ;;
-  --html)
-    build_html
-    ;;
-  *)
-    usage
-    exit 1
-    ;;
-esac
+build_pdf
