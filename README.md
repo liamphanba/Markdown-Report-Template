@@ -10,11 +10,20 @@ Minimalist, strict-grid report template inspired by Swiss design principles.
 - Print-safe A4 defaults
 - Minimal dependencies and simple export flow
 
+## Swiss Principles Embedded
+
+- Grid systems: constrained structure with optional 12-column utility classes
+- Typography: one main sans-serif family and a strict type scale
+- White space: fixed spacing scale (4/8 system) for rhythm and calm
+- Objectivity: decorative elements are minimized and content stays primary
+- Reduction: one accent color, minimal visual noise, no unnecessary UI artifacts
+- Clarity: hierarchy and spacing are designed for fast scanning and comprehension
+
 ## Repository Layout
 
 - `report.md`: write your report content here
 - `styles/swiss-report.css`: visual system for web and print
-- `scripts/export.sh`: export script (HTML always, PDF optional)
+- `scripts/export.sh`: export script with mode-based PDF/HTML workflows
 - `Makefile`: short commands for day-to-day use
 - `dist/`: generated output
 
@@ -24,30 +33,46 @@ Only one required dependency:
 
 - [Pandoc](https://pandoc.org/installing.html)
 
-Optional dependency for direct PDF export from command line:
+Default PDF engine (recommended for stable report pagination):
+
+- LaTeX engine via Pandoc (`xelatex` preferred, `lualatex` fallback)
+
+Optional dependency for CSS-based PDF export:
 
 - [WeasyPrint](https://weasyprint.org/)
 - Chrome/Chromium (headless print mode)
 
+## macOS Setup
+
+- Install Pandoc: brew install pandoc
+- Install LaTeX engine for default PDF mode: brew install --cask mactex-no-gui
+- Optional CSS PDF mode: brew install weasyprint
+
 ## Quick Start
 
 1. Edit `report.md`.
-2. Export HTML:
+2. Export PDF (default, LaTeX mode):
+
+```bash
+make
+```
+
+3. Export PDF using CSS mode (optional):
+
+```bash
+make pdf-css
+```
+
+4. Export HTML only (optional):
 
 ```bash
 make html
 ```
 
-3. Export PDF (if a PDF engine is available):
-
-```bash
-make pdf
-```
-
 Output files:
 
-- `dist/report.html`
-- `dist/report.pdf` (if PDF engine available)
+- `dist/report.pdf`
+- `dist/report.html` (only in HTML/CSS mode)
 
 ## Content Rules (Swiss Spirit)
 
@@ -56,6 +81,7 @@ Output files:
 - Use lists for decisions and actions.
 - Use one accent color sparingly.
 - Avoid decorative elements that do not carry meaning.
+- Remove any section that does not support a decision, explanation, or evidence.
 
 ## Customization
 
@@ -63,8 +89,28 @@ Adjust tokens in `styles/swiss-report.css`:
 
 - `--accent` for brand color
 - `--max-width` for text measure
-- `--baseline` for vertical rhythm
+- `--s1` to `--s7` for spacing scale
+- `--t-body` to `--t-h1` for type scale
+- `--measure` for readable line length
+
+## Practical Checklist Before Export
+
+- Does every section answer a real user question?
+- Is the heading hierarchy unambiguous (H1 > H2 > H3)?
+- Is accent color used only for meaningful emphasis?
+- Can the page be scanned in under 20 seconds?
+- Does print preview remain readable in A4 format?
 
 ## Notes
 
-If command-line PDF export is unavailable, open `dist/report.html` in your browser and use Print > Save as PDF.
+Set a custom LaTeX font at runtime if needed:
+
+```bash
+MAINFONT="Helvetica Neue" make pdf
+```
+
+If LaTeX is unavailable, use CSS mode with WeasyPrint:
+
+```bash
+make pdf-css
+```
