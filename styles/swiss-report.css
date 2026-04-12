@@ -1,30 +1,89 @@
-/* Swiss report system: strict structure, typographic clarity, restrained color */
+/*
+ * SWISS GRID SYSTEM
+ * Josef Muller-Brockmann -- Grid Systems in Graphic Design, 1961
+ *
+ * ISO A FORMAT -- height = width x sqrt(2)   (sqrt(2) ~= 1.41421356)
+ *
+ *   A0   841 x 1189 mm        A3   297 x 420 mm
+ *   A1   594 x  841 mm        A4   210 x 297 mm  <- default
+ *   A2   420 x  594 mm        A5   148 x 210 mm
+ *
+ * 9-UNIT MARGIN CANON (portrait, single-side):
+ *   unit          = page_width / 9
+ *   margin-top    = 1.0 * unit
+ *   margin-bottom = 2.0 * unit
+ *   margin-inner  = 1.0 * unit
+ *   margin-outer  = 1.5 * unit
+ *
+ *   Value                      |   A5     |   A4     |   A3
+ *   ---------------------------|----------|----------|----------
+ *   page-width                 |  148 mm  |  210 mm  |  297 mm
+ *   page-height                |  210 mm  |  297 mm  |  420 mm
+ *   unit  (width / 9)          | 16.44 mm | 23.33 mm | 33.00 mm
+ *   margin-top    (1.0 x unit) | 16.44 mm | 23.33 mm | 33.00 mm
+ *   margin-bottom (2.0 x unit) | 32.89 mm | 46.67 mm | 66.00 mm
+ *   margin-inner  (1.0 x unit) | 16.44 mm | 23.33 mm | 33.00 mm
+ *   margin-outer  (1.5 x unit) | 24.67 mm | 35.00 mm | 49.50 mm
+ *   content-width              |106.89 mm |151.67 mm |214.50 mm
+ *   content-height             |160.67 mm |227.00 mm |321.00 mm
+ *   ---------------------------|----------|----------|----------
+ *   12-COLUMN GRID  (gutter = content-w / 36)
+ *   gutter                     |  2.97 mm |  4.21 mm |  5.96 mm
+ *   column = (cw - 11g) / 12   |  6.19 mm |  8.78 mm | 12.41 mm
+ *   ---------------------------|----------|----------|----------
+ *   BASELINE GRID  (body 10.5 pt, line-height 1.5)
+ *   baseline = 10.5 x 1.5 = 15.75 pt = 5.56 mm
+ *   ---------------------------|----------|----------|----------
+ *   TYPE SCALE  (ratio x 1.25 from 10.5 pt / 16 px screen)
+ *   small  = base x 0.800  =  8.40 pt  / 0.800 rem
+ *   body   = 10.5 pt               = 1.000 rem  (16 px screen)
+ *   h3     = base x 1.250  = 13.13 pt  / 1.250 rem
+ *   h2     = base x 1.563  = 16.41 pt  / 1.563 rem
+ *   h1     = base x 2.441  = 25.63 pt  / 2.441 rem
+ *
+ *   To switch format: FORMAT=A3L make  or  FORMAT=A5P make
+ *   Format overrides: styles/formats/a1-portrait.css ... a6-landscape.css
+ */
+
 :root {
-  --paper: #fcfcf9;
-  --ink: #111111;
-  --muted: #565656;
-  --line: #d6d6d2;
+  /* Palette */
+  --paper:  #fcfcf9;
+  --ink:    #111111;
+  --muted:  #565656;
+  --line:   #d6d6d2;
   --accent: #c9261c;
 
+  /* Type scale -- ratio x1.25 from 10.5 pt print / 16 px screen */
+  --t-small: 0.800rem;   /*  8.40 pt /  12.8 px */
+  --t-body:  1.000rem;   /* 10.50 pt /  16.0 px */
+  --t-h3:    1.250rem;   /* 13.13 pt /  20.0 px */
+  --t-h2:    1.563rem;   /* 16.41 pt /  25.0 px */
+  --t-h1:    2.441rem;   /* 25.63 pt /  39.1 px */
+
+  /* Baseline: 16 px x 1.5 = 24 px screen  /  15.75 pt print */
+  --baseline: 24px;
+
+  /* Spacing scale -- multiples of baseline */
+  --s1:  4px;    /* baseline / 6   */
+  --s2:  8px;    /* baseline / 3   */
+  --s3:  16px;   /* baseline x 2/3 */
+  --s4:  24px;   /* baseline x 1   */
+  --s5:  32px;   /* baseline x 4/3 */
+  --s6:  48px;   /* baseline x 2   */
+  --s7:  72px;   /* baseline x 3   */
+  --s8:  96px;   /* baseline x 4   */
+
+  /* 12-column grid */
   --grid-columns: 12;
-  --max-width: 768px;
   --measure: 68ch;
 
-  /* 4/8 spacing scale */
-  --s1: 4px;
-  --s2: 8px;
-  --s3: 16px;
-  --s4: 24px;
-  --s5: 32px;
-  --s6: 48px;
-  --s7: 64px;
-
-  /* Type scale ratio ~1.25 */
-  --t-body: 1rem;
-  --t-small: 0.875rem;
-  --t-h3: 1.125rem;
-  --t-h2: 1.438rem;
-  --t-h1: 2.246rem;
+    /* A4 screen layout (default)
+      content-width:  151.67 mm x 3.7795 px/mm = 573 px
+     page-width:     210    mm x 3.7795        = 794 px
+     page-height:    297    mm x 3.7795        = 1123 px           */
+    --content-w:      573px;
+  --page-w-screen:  794px;
+  --page-h-screen: 1123px;
 }
 
 * {
@@ -51,14 +110,14 @@ body {
 
 main {
   width: 100%;
-  max-width: var(--max-width);
+  max-width: var(--content-w);
   margin: 0 auto;
 }
 
 /* Pandoc emits flat body content; this keeps every top-level block on the same measure. */
 body > * {
   width: 100%;
-  max-width: var(--max-width);
+  max-width: var(--content-w);
   margin-left: auto;
   margin-right: auto;
 }
@@ -217,15 +276,17 @@ img {
   }
 }
 
-/* Desktop preview that matches A4 geometry without affecting mobile flow. */
+/* Desktop preview -- simulates the active page format on screen.
+   --content-w, --page-w-screen, --page-h-screen are overridden
+  by the selected styles/formats/a*-portrait.css or a*-landscape.css. */
 @media screen and (min-width: 960px) {
   body {
     padding: var(--s6) 0;
-    background: #e9e9e4;
+    background: #deddd8;
   }
 
   body > * {
-    max-width: 178mm;
+    max-width: var(--content-w);
   }
 
   body::before {
@@ -234,11 +295,11 @@ img {
     top: 24px;
     left: 50%;
     transform: translateX(-50%);
-    width: 210mm;
-    height: calc(100% - 48px);
-    max-height: 297mm;
+    width: var(--page-w-screen);
+    height: calc(100vh - 48px);
+    max-height: var(--page-h-screen);
     background: #ffffff;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
     pointer-events: none;
     z-index: -1;
   }
@@ -247,7 +308,9 @@ img {
 @media print {
   @page {
     size: A4;
-    margin: 18mm 16mm 20mm 16mm;
+    /* 9-unit canon: unit = 210 / 9 = 23.33 mm
+       shorthand: top  right(outer)  bottom  left(inner)         */
+    margin: 23.3mm 35mm 46.7mm 23.3mm;
   }
 
   body {

@@ -7,7 +7,7 @@ Minimalist, strict-grid report template inspired by Swiss design principles.
 - Neutral typography with Helvetica-first stack
 - Strong hierarchy with consistent baseline rhythm
 - High contrast and restrained palette
-- Print-safe A4 defaults
+- Print-safe A-format defaults (A1 to A6)
 - Minimal dependencies and simple export flow
 
 ## Swiss Principles Embedded
@@ -69,6 +69,17 @@ make pdf-css
 make html
 ```
 
+5. Switch paper format and orientation:
+
+```bash
+FORMAT=A3L make       # A3 landscape PDF
+FORMAT=A5P make       # A5 portrait PDF
+FORMAT=A1L make html  # A1 landscape HTML preview
+```
+
+Supported values: `A1` to `A6` with optional `P` (portrait) or `L` (landscape).
+Examples: `A4` (default portrait), `A4L`, `A2P`.
+
 Output files:
 
 - `dist/report.pdf`
@@ -88,8 +99,8 @@ Output files:
 Adjust tokens in `styles/swiss-report.css`:
 
 - `--accent` for brand color
-- `--max-width` for text measure
-- `--s1` to `--s7` for spacing scale
+- `--content-w` for active format content width
+- `--s1` to `--s8` for spacing scale
 - `--t-body` to `--t-h1` for type scale
 - `--measure` for readable line length
 
@@ -99,7 +110,7 @@ Adjust tokens in `styles/swiss-report.css`:
 - Is the heading hierarchy unambiguous (H1 > H2 > H3)?
 - Is accent color used only for meaningful emphasis?
 - Can the page be scanned in under 20 seconds?
-- Does print preview remain readable in A4 format?
+- Does print preview remain readable in the selected A-format?
 
 ## Notes
 

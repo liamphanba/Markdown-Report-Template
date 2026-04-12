@@ -1,0 +1,33 @@
+/*
+ * A4 PORTRAIT FORMAT OVERRIDES
+ * 210 x 297 mm  --  unit = page_width / 9 = 23.33 mm
+ *
+ *   margin-top    = 23.3 mm
+ *   margin-bottom = 46.7 mm
+ *   margin-inner  = 23.3 mm
+ *   margin-outer  = 35.0 mm
+ *   content-width = 151.67 mm
+ *
+ *   Screen px (1 mm = 3.7795 px):
+ *   content-width:  573 px
+ *   page-width:     794 px
+ *   page-height:    1123 px
+ *
+ *   12-column grid:
+ *   gutter = 4.21 mm
+ *   column = 8.78 mm
+ */
+
+:root {
+  --content-w: 573px;
+  --page-w-screen: 794px;
+  --page-h-screen: 1123px;
+}
+
+@media print {
+  @page {
+    size: A4;
+    /* 9-unit canon: top  right(outer)  bottom  left(inner) */
+    margin: 23.3mm 35.0mm 46.7mm 23.3mm;
+  }
+}

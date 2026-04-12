@@ -2,6 +2,10 @@
 .PHONY: html pdf pdf-latex pdf-css clean
 
 SRC ?= report.md
+FORMAT ?= A4
+
+# Supported FORMAT values: A1..A6, with optional orientation suffix P/L
+# Examples: A4, A3L, A5P
 
 html:
 	bash scripts/export.sh $(SRC) --html

@@ -1,0 +1,33 @@
+/*
+ * A5 PORTRAIT FORMAT OVERRIDES
+ * 148 x 210 mm  --  unit = page_width / 9 = 16.44 mm
+ *
+ *   margin-top    = 16.4 mm
+ *   margin-bottom = 32.9 mm
+ *   margin-inner  = 16.4 mm
+ *   margin-outer  = 24.7 mm
+ *   content-width = 106.89 mm
+ *
+ *   Screen px (1 mm = 3.7795 px):
+ *   content-width:  404 px
+ *   page-width:     559 px
+ *   page-height:    794 px
+ *
+ *   12-column grid:
+ *   gutter = 2.97 mm
+ *   column = 6.19 mm
+ */
+
+:root {
+  --content-w: 404px;
+  --page-w-screen: 559px;
+  --page-h-screen: 794px;
+}
+
+@media print {
+  @page {
+    size: A5;
+    /* 9-unit canon: top  right(outer)  bottom  left(inner) */
+    margin: 16.4mm 24.7mm 32.9mm 16.4mm;
+  }
+}

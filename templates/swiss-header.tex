@@ -1,0 +1,130 @@
+% ============================================================
+% SWISS REPORT -- LaTeX Header
+% Josef Muller-Brockmann, Grid Systems in Graphic Design, 1961
+%
+% ISO A FORMAT:  height = width x sqrt(2)  (sqrt(2) ~= 1.41421356)
+%
+%   A3   297 x 420 mm
+%   A4   210 x 297 mm  <- default
+%   A5   148 x 210 mm
+%
+% 9-UNIT MARGIN CANON:
+%   unit           = page_width / 9
+%   margin-top     = 1.0 x unit
+%   margin-bottom  = 2.0 x unit
+%   margin-inner   = 1.0 x unit
+%   margin-outer   = 1.5 x unit
+%
+%   Value              |   A5     |   A4     |   A3
+%   -------------------|----------|----------|----------
+%   unit               | 16.44 mm | 23.33 mm | 33.00 mm
+%   margin-top         | 16.44 mm | 23.33 mm | 33.00 mm
+%   margin-bottom      | 32.89 mm | 46.67 mm | 66.00 mm
+%   margin-inner       | 16.44 mm | 23.33 mm | 33.00 mm
+%   margin-outer       | 24.67 mm | 35.00 mm | 49.50 mm
+%   content-width      |106.89 mm |151.67 mm |214.50 mm
+%   -------------------|----------|----------|----------
+%   12-COLUMN GRID     gutter = content-w / 36
+%   gutter             |  2.97 mm |  4.21 mm |  5.96 mm
+%   column             |  6.19 mm |  8.78 mm | 12.41 mm
+%   -------------------|----------|----------|----------
+%   BASELINE GRID      body 10.5 pt, leading 1.5
+%   baseline = 10.5 x 1.5 = 15.75 pt = 5.56 mm
+%   -------------------|----------|----------|----------
+%   TYPE SCALE         ratio x 1.25 from 10.5 pt
+%   small  = base x 0.800  =  8.40 pt
+%   body   = 10.5 pt
+%   h3     = base x 1.250  = 13.13 pt
+%   h2     = base x 1.563  = 16.41 pt
+%   h1     = base x 2.441  = 25.63 pt
+% ============================================================
+
+% ---- Colors ------------------------------------------------
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{111111}
+\definecolor{muted}{HTML}{565656}
+\definecolor{ruleline}{HTML}{D6D6D2}
+\definecolor{accent}{HTML}{C9261C}
+
+\color{ink}
+
+% ---- Heading format (titlesec) ----------------------------
+% Disable automatic section numbering
+\setcounter{secnumdepth}{0}
+
+\usepackage{titlesec}
+
+% section -> H1: 25.63 pt bold, thick rule below
+\titleformat{\section}[block]
+  {\fontsize{25.63pt}{30.75pt}\selectfont\bfseries\color{ink}}
+  {}
+  {0pt}
+  {}
+  [{\vspace{4pt}\textcolor{ink}{\hrule height 2.5pt}}\vspace{15.75pt}]
+
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+
+% subsection -> H2: 16.41 pt bold, thin rule above
+\titleformat{\subsection}[block]
+  {\fontsize{16.41pt}{19.69pt}\selectfont\bfseries\color{ink}}
+  {}
+  {0pt}
+  {\textcolor{ruleline}{\hrule height 0.4pt}\vspace{10pt}}
+  {}
+
+\titlespacing*{\subsection}{0pt}{47.25pt}{0pt}
+
+% subsubsection -> H3: 13.13 pt bold uppercase
+\titleformat{\subsubsection}[block]
+  {\fontsize{13.13pt}{15.75pt}\selectfont\bfseries\MakeUppercase\color{ink}}
+  {}
+  {0pt}
+  {}
+  {}
+
+\titlespacing*{\subsubsection}{0pt}{31.5pt}{7.875pt}
+
+% ---- Paragraph spacing ------------------------------------
+% No indent; one baseline unit between paragraphs
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{15.75pt}
+
+% ---- Blockquote: accent left rule -------------------------
+\usepackage{mdframed}
+\mdfdefinestyle{swissquote}{
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  leftline=true,
+  linewidth=2pt,
+  linecolor=accent,
+  backgroundcolor=white,
+  leftmargin=0pt,
+  rightmargin=0pt,
+  innerleftmargin=10pt,
+  innerrightmargin=0pt,
+  innertopmargin=2pt,
+  innerbottommargin=2pt,
+  font={\color{muted}}
+}
+
+\newenvironment{swissquoteenv}{%
+  \begin{mdframed}[style=swissquote]%
+}{%
+  \end{mdframed}%
+}
+
+\renewenvironment{quote}{\begin{swissquoteenv}}{\end{swissquoteenv}}
+
+% ---- Horizontal rule --------------------------------------
+\renewcommand{\rule}[2]{\textcolor{ruleline}{\hrule height 0.4pt}}
+
+% ---- Hyperlink colors -------------------------------------
+% hyperref is already loaded by Pandoc's default template;
+% these options are safe to apply post-load via \hypersetup
+\hypersetup{
+  colorlinks=true,
+  urlcolor=ink,
+  linkcolor=ink,
+  citecolor=ink
+}

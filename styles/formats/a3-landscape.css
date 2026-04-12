@@ -1,0 +1,33 @@
+/*
+ * A3 LANDSCAPE FORMAT OVERRIDES
+ * 420 x 297 mm  --  unit = page_width / 9 = 46.67 mm
+ *
+ *   margin-top    = 46.7 mm
+ *   margin-bottom = 93.3 mm
+ *   margin-inner  = 46.7 mm
+ *   margin-outer  = 70.0 mm
+ *   content-width = 303.33 mm
+ *
+ *   Screen px (1 mm = 3.7795 px):
+ *   content-width:  1146 px
+ *   page-width:     1587 px
+ *   page-height:    1123 px
+ *
+ *   12-column grid:
+ *   gutter = 8.43 mm
+ *   column = 17.55 mm
+ */
+
+:root {
+  --content-w: 1146px;
+  --page-w-screen: 1587px;
+  --page-h-screen: 1123px;
+}
+
+@media print {
+  @page {
+    size: A3 landscape;
+    /* 9-unit canon: top  right(outer)  bottom  left(inner) */
+    margin: 46.7mm 70.0mm 93.3mm 46.7mm;
+  }
+}
