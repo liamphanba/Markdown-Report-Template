@@ -2,6 +2,7 @@
 set -euo pipefail
 
 SRC="${1:-report.md}"
+METADATA_FILE="${METADATA_FILE:-report.yaml}"
 DIST_DIR="dist"
 PDF_OUT="${DIST_DIR}/report.pdf"
 MAINFONT="${MAINFONT:-}"
@@ -113,6 +114,7 @@ build_pdf() {
 
   local pandoc_args=(
     "$SRC"
+    --metadata-file "$METADATA_FILE"
     --pdf-engine "xelatex"
     --table-of-contents
     --toc-depth=3
@@ -158,6 +160,12 @@ fi
 
 if [[ ! -f "$SRC" ]]; then
   echo "Error: source file '$SRC' not found."
+  usage
+  exit 1
+fi
+
+if [[ ! -f "$METADATA_FILE" ]]; then
+  echo "Error: metadata file '$METADATA_FILE' not found."
   usage
   exit 1
 fi

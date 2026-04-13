@@ -21,6 +21,7 @@ Minimalist, strict-grid report template inspired by Swiss design principles.
 
 ## Repository Layout
 
+- `report.yaml`: all metadata, cover content, fonts, and colors
 - `report.md`: write your report content here
 - `styles/swiss-report.css`: visual system for web and print
 - `scripts/export.sh`: XeLaTeX-only PDF export script
@@ -44,14 +45,15 @@ PDF engine:
 
 ## Quick Start
 
-1. Edit `report.md`.
-2. Export PDF (default, LaTeX mode):
+1. Edit `report.yaml` for title, covers, fonts, and colors.
+2. Edit `report.md` for report content.
+3. Export PDF (default, LaTeX mode):
 
 ```bash
 make
 ```
 
-3. Switch paper format and orientation:
+4. Switch paper format and orientation:
 
 ```bash
 FORMAT=A3L make       # A3 landscape PDF
@@ -77,7 +79,7 @@ Output files:
 
 ## Customization
 
-All visual settings are controlled from the YAML front matter in `report.md`. No LaTeX knowledge needed.
+All user-facing customization is centralized in `report.yaml`. No LaTeX edits are required.
 
 ### Typography
 
@@ -123,6 +125,20 @@ color-back-bg:  "D9D9D9"   # back cover background
 ```
 
 All colour keys are optional — defaults match the above values.
+
+`report.yaml` is also where front and back cover content lives:
+
+```yaml
+fronttitle: 2026 Annual Financial Report
+frontsubtitle: Nexora Technologies Group — Full Year & Quarterly Review
+frontauthor: Group Finance & Investor Relations
+frontdate: 2026-12-31
+
+backtitle:
+backsubtitle:
+backauthor: Nexora Technologies Group — Full Year & Quarterly Review
+backdate: Group Finance & Investor Relations
+```
 
 Example brand override (navy + white covers, teal headings):
 

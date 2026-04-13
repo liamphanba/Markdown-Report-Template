@@ -2,6 +2,7 @@
 .PHONY: all pdf word clean
 
 SRC     ?= report.md
+METADATA_FILE ?= report.yaml
 FORMAT  ?= A4
 MAINFONT ?=
 DIST_DIR ?= dist
@@ -13,11 +14,11 @@ DOCX_OUT ?= $(DIST_DIR)/report.docx
 all: pdf word
 
 pdf:
-	FORMAT=$(FORMAT) MAINFONT=$(MAINFONT) bash scripts/export.sh $(SRC)
+	FORMAT=$(FORMAT) MAINFONT=$(MAINFONT) METADATA_FILE=$(METADATA_FILE) bash scripts/export.sh $(SRC)
 
 word:
 	mkdir -p $(DIST_DIR)
-	pandoc $(SRC) -o $(DOCX_OUT) --table-of-contents --toc-depth=3
+	pandoc $(SRC) --metadata-file=$(METADATA_FILE) -o $(DOCX_OUT) --table-of-contents --toc-depth=3
 
 clean:
 	rm -rf dist
