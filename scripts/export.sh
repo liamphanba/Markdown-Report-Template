@@ -4,7 +4,7 @@ set -euo pipefail
 SRC="${1:-report.md}"
 DIST_DIR="dist"
 PDF_OUT="${DIST_DIR}/report.pdf"
-MAINFONT="${MAINFONT:-Helvetica Neue}"
+MAINFONT="${MAINFONT:-}"
 FONT_PATH="${FONT_PATH:-}"
 FONT_EXTENSION="${FONT_EXTENSION:-}"
 FONT_UPRIGHT="${FONT_UPRIGHT:-}"
@@ -122,8 +122,11 @@ build_pdf() {
     -V "geometry:bottom=$GEOM_BOTTOM"
     -V "geometry:left=$GEOM_LEFT"
     -V "geometry:right=$GEOM_RIGHT"
-    -V "mainfont=$MAINFONT"
   )
+
+  if [[ -n "$MAINFONT" ]]; then
+    pandoc_args+=( -V "mainfont=$MAINFONT" )
+  fi
 
   if [[ -n "$mainfontopts" ]]; then
     pandoc_args+=( -V "mainfontoptions=$mainfontopts" )

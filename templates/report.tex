@@ -21,6 +21,18 @@ $if(beamerarticle)$
 \usepackage{beamerarticle}
 $endif$
 \usepackage{xcolor}
+% ── Theme colours ─────────────────────────────────────────────────────────────
+% Override any of these in report.md YAML front matter:
+%   color-ink, color-muted, color-heading,
+%   color-front-bg, color-front-fg, color-back-bg
+\definecolor{ink}{HTML}{$if(color-ink)$$color-ink$$else$111111$endif$}
+\definecolor{muted}{HTML}{$if(color-muted)$$color-muted$$else$545454$endif$}
+\colorlet{heading}{ink}
+$if(color-heading)$\definecolor{heading}{HTML}{$color-heading$}$endif$
+\definecolor{posterbg}{HTML}{$if(color-front-bg)$$color-front-bg$$else$111111$endif$}
+\definecolor{posterfg}{HTML}{$if(color-front-fg)$$color-front-fg$$else$FFFFFF$endif$}
+\definecolor{backpagebg}{HTML}{$if(color-back-bg)$$color-back-bg$$else$D9D9D9$endif$}
+% ──────────────────────────────────────────────────────────────────────────────
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
@@ -74,17 +86,20 @@ $endif$
     \thispagestyle{empty}%
     \raggedright
     \vspace*{0.10\paperheight}
-    {\fontsize{56pt}{56pt}\selectfont\bfseries $if(backtitle)$$backtitle$$else$$title$$endif$ \par}
+$if(backtitle)$
+  {\fontsize{56pt}{56pt}\selectfont\bfseries $backtitle$ \par}
+$endif$
 $if(backsubtitle)$
-    \vspace{12pt}
-    {\fontsize{18pt}{22pt}\selectfont $backsubtitle$ \par}
-$elseif(subtitle)$
-    \vspace{12pt}
-    {\fontsize{18pt}{22pt}\selectfont $subtitle$ \par}
+  \vspace{12pt}
+  {\fontsize{18pt}{22pt}\selectfont $backsubtitle$ \par}
 $endif$
     \vfill
-    {\fontsize{12pt}{14pt}\selectfont $if(backauthor)$$backauthor$$else$$for(author)$$author$$sep$, $endfor$$endif$ \par}
-    {\fontsize{11pt}{13pt}\selectfont $if(backdate)$$backdate$$else$$date$$endif$ \par}
+$if(backauthor)$
+  {\fontsize{12pt}{14pt}\selectfont $backauthor$ \par}
+$endif$
+$if(backdate)$
+  {\fontsize{11pt}{13pt}\selectfont $backdate$ \par}
+$endif$
   \end{titlepage}%
   \nopagecolor
   \color{ink}%

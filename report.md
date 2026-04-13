@@ -1,16 +1,41 @@
 ---
+# ─── Document metadata ────────────────────────────────────────────────────────
 title: 2026 Annual Financial Report
 subtitle: Nexora Technologies Group — Full Year & Quarterly Review
 author: Group Finance & Investor Relations
 date: 2026-12-31
+
+# ─── Front cover  (leave blank to fall back to title/subtitle/author/date) ───
 fronttitle: 2026 Annual Financial Report
 frontsubtitle: Nexora Technologies Group — Full Year & Quarterly Review
 frontauthor: Group Finance & Investor Relations
 frontdate: 2026-12-31
-backtitle: 2026 Annual Financial Report
-backsubtitle: Nexora Technologies Group — Full Year & Quarterly Review
-backauthor: Group Finance & Investor Relations
-backdate: 2026-12-31
+
+# ─── Back cover  (leave any field blank to omit it) ──────────────────────────
+backtitle:
+backsubtitle: 
+backauthor: Nexora Technologies Group — Full Year & Quarterly Review
+backdate: Group Finance & Investor Relations
+
+# ─── Typography ───────────────────────────────────────────────────────────────
+# mainfont must be an exact font family name recognised by XeLaTeX/fontspec.
+# Override at build time with: MAINFONT="Inter" make
+mainfont: "Helvetica Neue"
+
+# ─── Math font ────────────────────────────────────────────────────────────────
+# Use any unicode-math compatible font installed in your TeX distribution.
+# Run: kpsewhich --show-path opentype  to see search paths.
+header-includes:
+  - \setmathfont{TeX Gyre Termes Math}
+
+# ─── Colours (hex, no leading #) ─────────────────────────────────────────────
+# color-ink:       "111111"   # body text, footer, borders
+# color-muted:     "545454"   # blockquotes, secondary text
+# color-heading:   "111111"   # h1–h4 (defaults to color-ink if omitted)
+# color-front-bg:  "111111"   # front cover background
+# color-front-fg:  "FFFFFF"   # front cover text
+# color-back-bg:   "D9D9D9"   # back cover background
+
 lang: en
 ---
 ```{=latex}

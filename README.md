@@ -77,36 +77,26 @@ Output files:
 
 ## Customization
 
-Adjust tokens in `styles/swiss-report.css`:
+All visual settings are controlled from the YAML front matter in `report.md`. No LaTeX knowledge needed.
 
-- `--accent` for brand color
-- `--content-w` for active format content width
-- `--s1` to `--s8` for spacing scale
-- `--t-body` to `--t-h1` for type scale
-- `--measure` for readable line length
+### Typography
 
-## Practical Checklist Before Export
+```yaml
+mainfont: "Helvetica Neue"        # any font name recognised by XeLaTeX/fontspec
 
-- Does every section answer a real user question?
-- Is the heading hierarchy unambiguous (H1 > H2 > H3)?
-- Is accent color used only for meaningful emphasis?
-- Can the page be scanned in under 20 seconds?
-- Does print preview remain readable in the selected A-format?
-
-## Notes
-
-Default export font is `Helvetica Neue`.
-
-`MAINFONT` must be the exact full font family name recognized by XeLaTeX/fontspec.
-Use full names (for example: `Helvetica Neue`, `Times New Roman`, `SF Pro Text`), not abbreviations.
-
-Set a different font at runtime:
-
-```bash
-MAINFONT="Helvetica Neue" make
+# Math font — use any unicode-math compatible OTF in your TeX distribution
+header-includes:
+  - \setmathfont{TeX Gyre Termes Math}
 ```
 
-Use custom local font files (not system-installed):
+Override `mainfont` at build time without editing the file:
+
+```bash
+MAINFONT="Inter" make
+MAINFONT="Times New Roman" make
+```
+
+Use local font files that are not system-installed:
 
 ```bash
 MAINFONT="AvenirNext" \
@@ -118,3 +108,36 @@ FONT_ITALIC="*-Italic" \
 FONT_BOLDITALIC="*-BoldItalic" \
 make
 ```
+
+### Colours
+
+Set hex values (no leading `#`) in `report.md` YAML:
+
+```yaml
+color-ink:      "111111"   # body text, footer page number
+color-muted:    "545454"   # blockquotes and secondary text
+color-heading:  "1A1A2E"   # h1–h4 (omit to inherit color-ink)
+color-front-bg: "111111"   # front cover background
+color-front-fg: "FFFFFF"   # front cover text
+color-back-bg:  "D9D9D9"   # back cover background
+```
+
+All colour keys are optional — defaults match the above values.
+
+Example brand override (navy + white covers, teal headings):
+
+```yaml
+color-ink:      "0D1B2A"
+color-heading:  "0A7EA4"
+color-front-bg: "0D1B2A"
+color-front-fg: "FFFFFF"
+color-back-bg:  "E8F4F8"
+```
+
+## Practical Checklist Before Export
+
+- Does every section answer a real user question?
+- Is the heading hierarchy unambiguous (H1 > H2 > H3)?
+- Is accent color used only for meaningful emphasis?
+- Can the page be scanned in under 20 seconds?
+- Does print preview remain readable in the selected A-format?
