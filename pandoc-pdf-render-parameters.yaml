@@ -24,11 +24,11 @@ mainfont: "Helvetica Neue"
 
 # Math font
 header-includes:
-  - \setmathfont{texgyretermes-math.otf}
+  - \setmathfont{STIX Two Math}
 
 # PDF color parameters (hex, no leading #)
 pdf_body_text_color_hex: "111111"
-pdf_secondary_text_color_hex: "32CD87"
+pdf_secondary_text_color_hex: "269e68"
 pdf_heading_text_color_hex: "111111"
 pdf_front_cover_background_color_hex: "D6DCD1"
 pdf_front_cover_text_color_hex: "000000"
