@@ -35,4 +35,34 @@ header-includes:
 # color-front-fg:  "FFFFFF"   # front cover text
 # color-back-bg:   "D9D9D9"   # back cover background
 
+# ─── Layout + typography style tokens ───────────────────────────────────────
+# Footer:
+# style-footer-fontsize: "\\normalsize"   # page number size on normal pages
+# style-footer-footskip: "100pt"
+# style-footer-plain-fontsize: "\\Large"  # chapter-opening page number size
+# style-footer-plain-footskip: "90pt"
+#
+# Heading sizes (h1-h4):
+# style-h1-size: "40pt"
+# style-h1-leading: "40pt"
+# style-h1-after: "24pt"
+#
+# style-h2-size: "18pt"
+# style-h2-leading: "22pt"
+# style-h2-before: "18pt"
+# style-h2-after: "10pt"
+#
+# style-h3-size: "13pt"
+# style-h3-leading: "16pt"
+# style-h3-before: "14pt"
+# style-h3-after: "8pt"
+#
+# style-h4-size: "11pt"
+# style-h4-leading: "13pt"
+# style-h4-before: "10pt"
+# style-h4-after: "8pt"
+#
+# Body spacing:
+# style-parskip: "6pt plus 1pt minus 0.5pt"
+
 lang: en

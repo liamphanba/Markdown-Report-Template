@@ -48,6 +48,34 @@ $endif$
 $fonts.latex()$
 $font-settings.latex()$
 $common.latex()$
+% ── Style tokens from metadata ───────────────────────────────────────────────
+% Configure these in report-config.yaml.
+\newcommand{\ReportFooterFontSize}{$if(style-footer-fontsize)$$style-footer-fontsize$$else$\normalsize$endif$}
+\newcommand{\ReportFooterSkip}{$if(style-footer-footskip)$$style-footer-footskip$$else$100pt$endif$}
+\newcommand{\ReportFooterPlainFontSize}{$if(style-footer-plain-fontsize)$$style-footer-plain-fontsize$$else$\Large$endif$}
+\newcommand{\ReportFooterPlainSkip}{$if(style-footer-plain-footskip)$$style-footer-plain-footskip$$else$90pt$endif$}
+
+\newcommand{\ReportHOneSize}{$if(style-h1-size)$$style-h1-size$$else$40pt$endif$}
+\newcommand{\ReportHOneLeading}{$if(style-h1-leading)$$style-h1-leading$$else$40pt$endif$}
+\newcommand{\ReportHOneAfter}{$if(style-h1-after)$$style-h1-after$$else$24pt$endif$}
+
+\newcommand{\ReportHTwoSize}{$if(style-h2-size)$$style-h2-size$$else$18pt$endif$}
+\newcommand{\ReportHTwoLeading}{$if(style-h2-leading)$$style-h2-leading$$else$22pt$endif$}
+\newcommand{\ReportHTwoBefore}{$if(style-h2-before)$$style-h2-before$$else$18pt$endif$}
+\newcommand{\ReportHTwoAfter}{$if(style-h2-after)$$style-h2-after$$else$10pt$endif$}
+
+\newcommand{\ReportHThreeSize}{$if(style-h3-size)$$style-h3-size$$else$13pt$endif$}
+\newcommand{\ReportHThreeLeading}{$if(style-h3-leading)$$style-h3-leading$$else$16pt$endif$}
+\newcommand{\ReportHThreeBefore}{$if(style-h3-before)$$style-h3-before$$else$14pt$endif$}
+\newcommand{\ReportHThreeAfter}{$if(style-h3-after)$$style-h3-after$$else$8pt$endif$}
+
+\newcommand{\ReportHFourSize}{$if(style-h4-size)$$style-h4-size$$else$11pt$endif$}
+\newcommand{\ReportHFourLeading}{$if(style-h4-leading)$$style-h4-leading$$else$13pt$endif$}
+\newcommand{\ReportHFourBefore}{$if(style-h4-before)$$style-h4-before$$else$10pt$endif$}
+\newcommand{\ReportHFourAfter}{$if(style-h4-after)$$style-h4-after$$else$8pt$endif$}
+
+\newcommand{\ReportParSkip}{$if(style-parskip)$$style-parskip$$else$6pt plus 1pt minus 0.5pt$endif$}
+% ─────────────────────────────────────────────────────────────────────────────
 $for(header-includes)$
 $header-includes$
 $endfor$

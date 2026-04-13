@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SRC="${1:-report.md}"
-METADATA_FILE="${METADATA_FILE:-report.yaml}"
+METADATA_FILE="${METADATA_FILE:-report-config.yaml}"
 DIST_DIR="dist"
 PDF_OUT="${DIST_DIR}/report.pdf"
 MAINFONT="${MAINFONT:-}"

@@ -21,7 +21,7 @@ Minimalist, strict-grid report template inspired by Swiss design principles.
 
 ## Repository Layout
 
-- `report.yaml`: all metadata, cover content, fonts, and colors
+- `report-config.yaml`: all metadata, cover content, colors, and style tokens
 - `report.md`: write your report content here
 - `styles/swiss-report.css`: visual system for web and print
 - `scripts/export.sh`: XeLaTeX-only PDF export script
@@ -45,7 +45,7 @@ PDF engine:
 
 ## Quick Start
 
-1. Edit `report.yaml` for title, covers, fonts, and colors.
+1. Edit `report-config.yaml` for title, covers, fonts, colors, and style.
 2. Edit `report.md` for report content.
 3. Export PDF (default, LaTeX mode):
 
@@ -79,7 +79,7 @@ Output files:
 
 ## Customization
 
-All user-facing customization is centralized in `report.yaml`. No LaTeX edits are required.
+All user-facing customization is centralized in `report-config.yaml`. No LaTeX edits are required.
 
 ### Typography
 
@@ -126,7 +126,7 @@ color-back-bg:  "D9D9D9"   # back cover background
 
 All colour keys are optional — defaults match the above values.
 
-`report.yaml` is also where front and back cover content lives:
+`report-config.yaml` is also where front and back cover content lives:
 
 ```yaml
 fronttitle: 2026 Annual Financial Report
@@ -138,6 +138,36 @@ backtitle:
 backsubtitle:
 backauthor: Nexora Technologies Group — Full Year & Quarterly Review
 backdate: Group Finance & Investor Relations
+```
+
+Style tokens are in the same file too:
+
+```yaml
+style-footer-fontsize: "\\normalsize"
+style-footer-footskip: "100pt"
+style-footer-plain-fontsize: "\\Large"
+style-footer-plain-footskip: "90pt"
+
+style-h1-size: "40pt"
+style-h1-leading: "40pt"
+style-h1-after: "24pt"
+
+style-h2-size: "18pt"
+style-h2-leading: "22pt"
+style-h2-before: "18pt"
+style-h2-after: "10pt"
+
+style-h3-size: "13pt"
+style-h3-leading: "16pt"
+style-h3-before: "14pt"
+style-h3-after: "8pt"
+
+style-h4-size: "11pt"
+style-h4-leading: "13pt"
+style-h4-before: "10pt"
+style-h4-after: "8pt"
+
+style-parskip: "6pt plus 1pt minus 0.5pt"
 ```
 
 Example brand override (navy + white covers, teal headings):

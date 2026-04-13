@@ -2,7 +2,7 @@
 .PHONY: all pdf word clean
 
 SRC     ?= report.md
-METADATA_FILE ?= report.yaml
+METADATA_FILE ?= report-config.yaml
 FORMAT  ?= A4
 MAINFONT ?=
 DIST_DIR ?= dist

@@ -12,12 +12,12 @@
 \usepackage{tocloft}
 \pagestyle{fancy}
 \fancyhf{}
-\setlength{\footskip}{100pt}
-\fancyfoot[R]{\color{ink}\normalsize\thepage}
+\setlength{\footskip}{\ReportFooterSkip}
+\fancyfoot[R]{\color{ink}\ReportFooterFontSize\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 % Chapter-opening pages also use plain style — keep consistent
-\fancypagestyle{plain}{\fancyhf{}\setlength{\footskip}{90pt}\fancyfoot[R]{\color{ink}\Large\thepage}\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}}
+\fancypagestyle{plain}{\fancyhf{}\setlength{\footskip}{\ReportFooterPlainSkip}\fancyfoot[R]{\color{ink}\ReportFooterPlainFontSize\thepage}\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}}
 % Customize TOC: no dots, keep page numbers
 \renewcommand{\cftdot}{}
 \renewcommand{\cftchappagefont}{\normalfont}
@@ -35,38 +35,38 @@
   {\raggedright\normalfont\bfseries\color{heading}}
   {}
   {0pt}
-  {\fontsize{40pt}{40pt}\selectfont}
+  {\fontsize{\ReportHOneSize}{\ReportHOneLeading}\selectfont}
 
-\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\chapter}{0pt}{0pt}{\ReportHOneAfter}
 
 \titleformat{\section}[block]
-  {\raggedright\normalfont\bfseries\fontsize{18pt}{22pt}\selectfont\color{heading}}
+  {\raggedright\normalfont\bfseries\fontsize{\ReportHTwoSize}{\ReportHTwoLeading}\selectfont\color{heading}}
   {\thesection}
   {10pt}
   {}
 
-\titlespacing*{\section}{0pt}{18pt}{10pt}
+\titlespacing*{\section}{0pt}{\ReportHTwoBefore}{\ReportHTwoAfter}
 
 \titleformat{\subsection}[block]
-  {\raggedright\normalfont\bfseries\fontsize{13pt}{16pt}\selectfont\color{heading}}
+  {\raggedright\normalfont\bfseries\fontsize{\ReportHThreeSize}{\ReportHThreeLeading}\selectfont\color{heading}}
   {\thesubsection}
   {8pt}
   {}
 
-\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+\titlespacing*{\subsection}{0pt}{\ReportHThreeBefore}{\ReportHThreeAfter}
 
 \titleformat{\subsubsection}[runin]
-  {\normalfont\bfseries\fontsize{11pt}{13pt}\selectfont\color{heading}}
+  {\normalfont\bfseries\fontsize{\ReportHFourSize}{\ReportHFourLeading}\selectfont\color{heading}}
   {\thesubsubsection}
   {6pt}
   {}
   [.] 
 
-\titlespacing*{\subsubsection}{0pt}{10pt}{8pt}
+\titlespacing*{\subsubsection}{0pt}{\ReportHFourBefore}{\ReportHFourAfter}
 
 % Body text: tighter spacing to minimize blank pages
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 1pt minus 0.5pt}
+\setlength{\parskip}{\ReportParSkip}
 \raggedbottom
 
 % Simple quote style without decorative rules.
