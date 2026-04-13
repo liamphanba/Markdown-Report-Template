@@ -21,10 +21,10 @@ Minimalist, strict-grid report template inspired by Swiss design principles.
 
 ## Repository Layout
 
-- `report-config.yaml`: all metadata, cover content, colors, and style tokens
+- `pandoc-pdf-render-parameters.yaml`: all metadata, cover content, colors, and style tokens
 - `report.md`: write your report content here
-- `styles/swiss-report.css`: visual system for web and print
-- `scripts/export.sh`: XeLaTeX-only PDF export script
+- `templates/pandoc-xelatex-pdf-render-template.tex`: single Pandoc+LaTeX template for PDF styling
+- `scripts/export.sh`: PDF export script (Pandoc + XeLaTeX)
 - `Makefile`: short commands for day-to-day use
 - `dist/`: generated output
 
@@ -45,9 +45,9 @@ PDF engine:
 
 ## Quick Start
 
-1. Edit `report-config.yaml` for title, covers, fonts, colors, and style.
+1. Edit `pandoc-pdf-render-parameters.yaml` for title, covers, fonts, colors, and style.
 2. Edit `report.md` for report content.
-3. Export PDF (default, LaTeX mode):
+3. Export PDF:
 
 ```bash
 make
@@ -64,7 +64,7 @@ FORMAT=A1L make       # A1 landscape PDF
 Supported values: `A1` to `A6` with optional `P` (portrait) or `L` (landscape).
 Examples: `A4` (default portrait), `A4L`, `A2P`.
 
-Output files:
+Output file:
 
 - `dist/report.pdf`
 
@@ -79,7 +79,7 @@ Output files:
 
 ## Customization
 
-All user-facing customization is centralized in `report-config.yaml`. No LaTeX edits are required.
+All user-facing customization is centralized in `pandoc-pdf-render-parameters.yaml`. No LaTeX edits are required.
 
 ### Typography
 
@@ -88,7 +88,7 @@ mainfont: "Helvetica Neue"        # any font name recognised by XeLaTeX/fontspec
 
 # Math font — use any unicode-math compatible OTF in your TeX distribution
 header-includes:
-  - \setmathfont{TeX Gyre Termes Math}
+  - \setmathfont{texgyretermes-math.otf}
 ```
 
 Override `mainfont` at build time without editing the file:
@@ -113,77 +113,84 @@ make
 
 ### Colours
 
-Set hex values (no leading `#`) in `report.md` YAML:
+Set hex values (no leading `#`) in `pandoc-pdf-render-parameters.yaml`:
 
 ```yaml
-color-ink:      "111111"   # body text, footer page number
-color-muted:    "545454"   # blockquotes and secondary text
-color-heading:  "1A1A2E"   # h1–h4 (omit to inherit color-ink)
-color-front-bg: "111111"   # front cover background
-color-front-fg: "FFFFFF"   # front cover text
-color-back-bg:  "D9D9D9"   # back cover background
+pdf_body_text_color_hex: "111111"                  # body text, footer page number
+pdf_secondary_text_color_hex: "545454"             # blockquotes and secondary text
+pdf_heading_text_color_hex: "1A1A2E"               # h1-h4
+pdf_front_cover_background_color_hex: "111111"     # front cover background
+pdf_front_cover_text_color_hex: "FFFFFF"           # front cover text
+pdf_back_cover_background_color_hex: "D9D9D9"      # back cover background
 ```
 
-All colour keys are optional — defaults match the above values.
+All color keys are explicit render parameters and should be set directly.
 
-`report-config.yaml` is also where front and back cover content lives:
+`pandoc-pdf-render-parameters.yaml` is also where front and back cover content lives:
 
 ```yaml
-fronttitle: 2026 Annual Financial Report
-frontsubtitle: Nexora Technologies Group — Full Year & Quarterly Review
-frontauthor: Group Finance & Investor Relations
-frontdate: 2026-12-31
+pdf_front_cover_title_text: 2026 Annual Financial Report
+pdf_front_cover_subtitle_text: Nexora Technologies Group — Full Year & Quarterly Review
+pdf_front_cover_author_text: Group Finance & Investor Relations
+pdf_front_cover_date_text: 2026-12-31
 
-backtitle:
-backsubtitle:
-backauthor: Nexora Technologies Group — Full Year & Quarterly Review
-backdate: Group Finance & Investor Relations
+pdf_back_cover_title_text: ""
+pdf_back_cover_subtitle_text: ""
+pdf_back_cover_author_text: Nexora Technologies Group — Full Year & Quarterly Review
+pdf_back_cover_date_text: Group Finance & Investor Relations
 ```
 
 Style tokens are in the same file too:
 
 ```yaml
-style-footer-fontsize: "\\normalsize"
-style-footer-footskip: "100pt"
-style-footer-plain-fontsize: "\\Large"
-style-footer-plain-footskip: "90pt"
+pdf_footer_page_number_font_size_command: "\\normalsize"
+pdf_footer_vertical_offset: "100pt"
+pdf_footer_chapter_opening_page_number_font_size_command: "\\Large"
+pdf_footer_chapter_opening_vertical_offset: "90pt"
 
-style-h1-size: "40pt"
-style-h1-leading: "40pt"
-style-h1-after: "24pt"
+pdf_heading_level_1_font_size: "40pt"
+pdf_heading_level_1_line_height: "40pt"
+pdf_heading_level_1_spacing_after: "24pt"
 
-style-h2-size: "18pt"
-style-h2-leading: "22pt"
-style-h2-before: "18pt"
-style-h2-after: "10pt"
+pdf_heading_level_2_font_size: "18pt"
+pdf_heading_level_2_line_height: "22pt"
+pdf_heading_level_2_spacing_before: "18pt"
+pdf_heading_level_2_spacing_after: "10pt"
 
-style-h3-size: "13pt"
-style-h3-leading: "16pt"
-style-h3-before: "14pt"
-style-h3-after: "8pt"
+pdf_heading_level_3_font_size: "13pt"
+pdf_heading_level_3_line_height: "16pt"
+pdf_heading_level_3_spacing_before: "14pt"
+pdf_heading_level_3_spacing_after: "8pt"
 
-style-h4-size: "11pt"
-style-h4-leading: "13pt"
-style-h4-before: "10pt"
-style-h4-after: "8pt"
+pdf_heading_level_4_font_size: "11pt"
+pdf_heading_level_4_line_height: "13pt"
+pdf_heading_level_4_spacing_before: "10pt"
+pdf_heading_level_4_spacing_after: "8pt"
 
-style-parskip: "6pt plus 1pt minus 0.5pt"
+pdf_body_paragraph_spacing: "6pt plus 1pt minus 0.5pt"
 ```
 
 Example brand override (navy + white covers, teal headings):
 
 ```yaml
-color-ink:      "0D1B2A"
-color-heading:  "0A7EA4"
-color-front-bg: "0D1B2A"
-color-front-fg: "FFFFFF"
-color-back-bg:  "E8F4F8"
+pdf_body_text_color_hex: "0D1B2A"
+pdf_heading_text_color_hex: "0A7EA4"
+pdf_front_cover_background_color_hex: "0D1B2A"
+pdf_front_cover_text_color_hex: "FFFFFF"
+pdf_back_cover_background_color_hex: "E8F4F8"
 ```
 
 ## Practical Checklist Before Export
 
-- Does every section answer a real user question?
 - Is the heading hierarchy unambiguous (H1 > H2 > H3)?
 - Is accent color used only for meaningful emphasis?
 - Can the page be scanned in under 20 seconds?
 - Does print preview remain readable in the selected A-format?
+
+## Notes
+
+This project is PDF-first.
+
+- `make` and `make pdf` produce the same PDF output.
+- All styling logic lives in `templates/pandoc-xelatex-pdf-render-template.tex`.
+- `pandoc-pdf-render-parameters.yaml` is the only user-facing configuration file.

@@ -1,0 +1,203 @@
+$document-metadata.latex()$
+$passoptions.latex()$
+\documentclass[
+$for(babel-otherlangs)$
+  $babel-otherlangs$,
+$endfor$
+$if(babel-lang)$
+  $babel-lang$,
+$endif$
+$if(fontsize)$
+  $fontsize$,
+$endif$
+$if(papersize)$
+  $papersize$paper,
+$endif$
+$for(classoption)$
+  $classoption$$sep$,
+$endfor$
+]{$documentclass$}
+$if(beamerarticle)$
+\usepackage{beamerarticle}
+$endif$
+\usepackage{xcolor}
+% Theme colours from pandoc-pdf-render-parameters.yaml.
+\definecolor{ink}{HTML}{$pdf_body_text_color_hex$}
+\definecolor{muted}{HTML}{$pdf_secondary_text_color_hex$}
+\definecolor{heading}{HTML}{$pdf_heading_text_color_hex$}
+\definecolor{posterbg}{HTML}{$pdf_front_cover_background_color_hex$}
+\definecolor{posterfg}{HTML}{$pdf_front_cover_text_color_hex$}
+\definecolor{backpagebg}{HTML}{$pdf_back_cover_background_color_hex$}
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+\usepackage{amsmath,amssymb}
+$if(cancel)$
+\usepackage{cancel}
+$endif$
+$if(numbersections)$
+\setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
+$else$
+\setcounter{secnumdepth}{-\maxdimen}
+$endif$
+$fonts.latex()$
+$font-settings.latex()$
+$common.latex()$
+
+% Style tokens from pandoc-pdf-render-parameters.yaml.
+\newcommand{\ReportFooterFontSize}{$pdf_footer_page_number_font_size_command$}
+\newcommand{\ReportFooterSkip}{$pdf_footer_vertical_offset$}
+\newcommand{\ReportFooterPlainFontSize}{$pdf_footer_chapter_opening_page_number_font_size_command$}
+\newcommand{\ReportFooterPlainSkip}{$pdf_footer_chapter_opening_vertical_offset$}
+
+\newcommand{\ReportHOneSize}{$pdf_heading_level_1_font_size$}
+\newcommand{\ReportHOneLeading}{$pdf_heading_level_1_line_height$}
+\newcommand{\ReportHOneAfter}{$pdf_heading_level_1_spacing_after$}
+
+\newcommand{\ReportHTwoSize}{$pdf_heading_level_2_font_size$}
+\newcommand{\ReportHTwoLeading}{$pdf_heading_level_2_line_height$}
+\newcommand{\ReportHTwoBefore}{$pdf_heading_level_2_spacing_before$}
+\newcommand{\ReportHTwoAfter}{$pdf_heading_level_2_spacing_after$}
+
+\newcommand{\ReportHThreeSize}{$pdf_heading_level_3_font_size$}
+\newcommand{\ReportHThreeLeading}{$pdf_heading_level_3_line_height$}
+\newcommand{\ReportHThreeBefore}{$pdf_heading_level_3_spacing_before$}
+\newcommand{\ReportHThreeAfter}{$pdf_heading_level_3_spacing_after$}
+
+\newcommand{\ReportHFourSize}{$pdf_heading_level_4_font_size$}
+\newcommand{\ReportHFourLeading}{$pdf_heading_level_4_line_height$}
+\newcommand{\ReportHFourBefore}{$pdf_heading_level_4_spacing_before$}
+\newcommand{\ReportHFourAfter}{$pdf_heading_level_4_spacing_after$}
+
+\newcommand{\ReportParSkip}{$pdf_body_paragraph_spacing$}
+
+% PDF styling kept inline for clarity.
+\color{ink}
+\usepackage{textcomp}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\footskip}{\ReportFooterSkip}
+\fancyfoot[R]{\color{ink}\ReportFooterFontSize\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\setlength{\footskip}{\ReportFooterPlainSkip}\fancyfoot[R]{\color{ink}\ReportFooterPlainFontSize\thepage}\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}}
+\renewcommand{\cftdot}{}
+\renewcommand{\cftchappagefont}{\normalfont}
+\setcounter{secnumdepth}{-1}
+\setcounter{tocdepth}{3}
+\usepackage{titlesec}
+\titleclass{\chapter}{straight}
+\let\cleardoublepage\clearpage
+\titleformat{\chapter}[display]{\raggedright\normalfont\bfseries\color{heading}}{}{0pt}{\fontsize{\ReportHOneSize}{\ReportHOneLeading}\selectfont}
+\titlespacing*{\chapter}{0pt}{0pt}{\ReportHOneAfter}
+\titleformat{\section}[block]{\raggedright\normalfont\bfseries\fontsize{\ReportHTwoSize}{\ReportHTwoLeading}\selectfont\color{heading}}{\thesection}{10pt}{}
+\titlespacing*{\section}{0pt}{\ReportHTwoBefore}{\ReportHTwoAfter}
+\titleformat{\subsection}[block]{\raggedright\normalfont\bfseries\fontsize{\ReportHThreeSize}{\ReportHThreeLeading}\selectfont\color{heading}}{\thesubsection}{8pt}{}
+\titlespacing*{\subsection}{0pt}{\ReportHThreeBefore}{\ReportHThreeAfter}
+\titleformat{\subsubsection}[runin]{\normalfont\bfseries\fontsize{\ReportHFourSize}{\ReportHFourLeading}\selectfont\color{heading}}{\thesubsubsection}{6pt}{}[.]
+\titlespacing*{\subsubsection}{0pt}{\ReportHFourBefore}{\ReportHFourAfter}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\ReportParSkip}
+\raggedbottom
+\renewenvironment{quote}{\list{} {\leftmargin=1.2em\rightmargin=1.2em}\item\relax\itshape\color{muted}}{\endlist}
+\providecommand{\hypersetup}[1]{}
+\hypersetup{colorlinks=true,urlcolor=ink,linkcolor=ink,citecolor=ink}
+\AtBeginDocument{%
+  \pagenumbering{gobble}%
+  \let\frontmatter\relax%
+  \let\mainmatter\relax%
+  \providecommand{\horizontalrule}{}%
+  \renewcommand{\horizontalrule}{}%
+  \pagestyle{empty}%
+}
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+$after-header-includes.latex()$
+$hypersetup.latex()$
+
+% Cover page commands.
+\renewcommand{\maketitle}{%
+  \begin{titlepage}%
+    \pagecolor{posterbg}%
+    \color{posterfg}%
+    \thispagestyle{empty}%
+    \raggedright
+    \vspace*{0.10\paperheight}
+    {\fontsize{56pt}{56pt}\selectfont\bfseries $pdf_front_cover_title_text$ \par}
+    \vspace{12pt}
+    {\fontsize{18pt}{22pt}\selectfont $pdf_front_cover_subtitle_text$ \par}
+    \vfill
+    {\fontsize{12pt}{14pt}\selectfont $pdf_front_cover_author_text$ \par}
+    {\fontsize{11pt}{13pt}\selectfont $pdf_front_cover_date_text$ \par}
+  \end{titlepage}%
+  \nopagecolor
+  \color{ink}%
+}
+
+\newcommand{\makebackpage}{%
+  \begin{titlepage}%
+    \pagecolor{backpagebg}%
+    \color{ink}%
+    \thispagestyle{empty}%
+    \raggedright
+    \vspace*{0.10\paperheight}
+  {\fontsize{56pt}{56pt}\selectfont\bfseries $pdf_back_cover_title_text$ \par}
+    \vspace{12pt}
+  {\fontsize{18pt}{22pt}\selectfont $pdf_back_cover_subtitle_text$ \par}
+    \vfill
+  {\fontsize{12pt}{14pt}\selectfont $pdf_back_cover_author_text$ \par}
+  {\fontsize{11pt}{13pt}\selectfont $pdf_back_cover_date_text$ \par}
+  \end{titlepage}%
+  \nopagecolor
+  \color{ink}%
+}
+
+$if(title)$
+\title{$title$}
+$endif$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+\date{$date$}
+
+\begin{document}
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+$if(title)$
+\maketitle
+$endif$
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+$if(toc-title)$
+\renewcommand*\contentsname{$toc-title$}
+$endif$
+{
+$if(colorlinks)$
+$if(toccolor)$
+\hypersetup{linkcolor=$toccolor$}
+$endif$
+$endif$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$if(has-frontmatter)$
+\mainmatter
+$endif$
+$body$
+
+$if(has-frontmatter)$
+\backmatter
+$endif$
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}

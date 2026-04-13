@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SRC="${1:-report.md}"
-METADATA_FILE="${METADATA_FILE:-report-config.yaml}"
+METADATA_FILE="${METADATA_FILE:-pandoc-pdf-render-parameters.yaml}"
 DIST_DIR="dist"
 PDF_OUT="${DIST_DIR}/report.pdf"
 MAINFONT="${MAINFONT:-}"
@@ -13,8 +13,7 @@ FONT_BOLD="${FONT_BOLD:-}"
 FONT_ITALIC="${FONT_ITALIC:-}"
 FONT_BOLDITALIC="${FONT_BOLDITALIC:-}"
 FORMAT="${FORMAT:-A4}"
-LATEX_HEADER="templates/swiss-header.tex"
-LATEX_TEMPLATE="templates/report.tex"
+LATEX_TEMPLATE="templates/pandoc-xelatex-pdf-render-template.tex"
 
 # FORMAT syntax: A1..A6, optional P/L suffix.
 # Examples: A4, A4P, A4L, A3L, A6P
@@ -80,11 +79,6 @@ build_pdf() {
 
   mkdir -p "$DIST_DIR"
 
-  local header_arg=""
-  if [[ -f "$LATEX_HEADER" ]]; then
-    header_arg="--include-in-header $LATEX_HEADER"
-  fi
-
   local mainfontopts=""
   if [[ -n "$FONT_PATH" ]]; then
     if [[ ! -d "$FONT_PATH" ]]; then
@@ -136,10 +130,6 @@ build_pdf() {
 
   if [[ -n "$GEOM_ORIENTATION_ARG" ]]; then
     pandoc_args+=( $GEOM_ORIENTATION_ARG )
-  fi
-
-  if [[ -n "$header_arg" ]]; then
-    pandoc_args+=( --include-in-header "$LATEX_HEADER" )
   fi
 
   if [[ -f "$LATEX_TEMPLATE" ]]; then

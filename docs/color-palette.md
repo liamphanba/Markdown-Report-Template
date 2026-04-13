@@ -86,6 +86,6 @@ Primary paragraph text uses ink color by default.
 </div>
 ```
 
-## CSS Token Source
+## Config Source
 
-These values match the tokens in [styles/swiss-report.css](styles/swiss-report.css).
+These values map to the color keys in `pandoc-pdf-render-parameters.yaml` (`pdf_body_text_color_hex`, `pdf_secondary_text_color_hex`, `pdf_heading_text_color_hex`, `pdf_front_cover_background_color_hex`, `pdf_front_cover_text_color_hex`, `pdf_back_cover_background_color_hex`).
