@@ -35,7 +35,7 @@ pdf_front_cover_text_color_hex: "000000"
 pdf_back_cover_background_color_hex: "D9D9D9"
 
 # PDF layout and typography parameters
-pdf_footer_page_number_font_size_command: "\\normalsize"
+pdf_footer_page_number_font_size_command: "\\Large"
 pdf_footer_vertical_offset: "100pt"
 pdf_footer_chapter_opening_page_number_font_size_command: "\\Large"
 pdf_footer_chapter_opening_vertical_offset: "90pt"
